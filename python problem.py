@@ -11,3 +11,6 @@ list1[0]=list1[0].replace("2","")
 list1
 
 #Q3
+def MyFun((x, y), (a, b)):
+    return x * y - a * b
+#the function is wrong, because we cannot use tuple to create functions. tuple is immutable
