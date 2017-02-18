@@ -37,3 +37,7 @@ for i in list1:
     a+= 1
     list2.append(a)
 print(list2)
+
+#Q5
+list2=list(map(lambda x,y: [x,y],[1, 3, 5, 7, 9], [2, 4, 6, 8, 10]))
+list3=[[x,y] for x in [1, 3, 5, 7, 9] for y in [2, 4, 6, 8, 10] if y-x == 1]
