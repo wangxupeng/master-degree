@@ -22,3 +22,19 @@ def grad(x):
 def ovgrad(g1,g2,g3,g4,g5):
     list=[grad(g1),grad(g2),grad(g3),grad(g4),grad(g5)]
     return list
+##########################
+x=int(input("Please enter an integer: "))
+if x<0:
+    x=0
+    print('negative changed to zero')
+
+elif x==0:
+        print ('Zero')
+
+elif x==1:
+        print ('Single')
+
+else:
+        print ('More')
+        ###############################################################
+        
