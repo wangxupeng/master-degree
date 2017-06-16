@@ -51,7 +51,7 @@ batch_size = 50
 x_data = tf.placeholder(shape=[None, 4], dtype=tf.float32)
 y_target = tf.placeholder(shape=[None, 1], dtype=tf.float32)
 
-hidden_layer_nodes = 5
+hidden_layer_nodes = 10
 A1 = tf.Variable(tf.random_normal(shape=[4,hidden_layer_nodes]))
 b1 = tf.Variable(tf.random_normal(shape=[hidden_layer_nodes]))
 A2 = tf.Variable(tf.random_normal(shape=[hidden_layer_nodes,1]))
@@ -67,7 +67,7 @@ train_step = my_opt.minimize(loss)
 init = tf.initialize_all_variables()
 sess.run(init)
 
-
+accuracy=0.
 loss_vec = []
 test_loss = []
 for i in range(10000):
@@ -86,7 +86,9 @@ for i in range(10000):
     test_loss.append(np.sqrt(test_temp_loss))
     if (i+1)%50==0:
             print('Generation: ' + str(i+1) + '. Loss = ' + str(temp_loss))
-
+    if temp_loss <0.05:
+        accuracy += 1./len(y_vals_test)
+print("accuracy is ",'%.2f%%' %accuracy)
 plt.plot(loss_vec, 'k-', label='Train Loss')
 plt.plot(test_loss, 'r--', label='Test Loss')
 plt.title('Loss (MSE) per Generation')
