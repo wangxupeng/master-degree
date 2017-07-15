@@ -1,4 +1,8 @@
 # -*- coding: utf-8 -*-
+"""
+@author: Wang xupeng
+"""
+
 import tensorflow as tf 
 import numpy as np  
 from scipy.stats import norm
@@ -24,20 +28,20 @@ def normalize_cols(m):
 
 def run_main():
     start = time.time()
-    option_price1 = lookback(0.5,0.2,1,1000)
-    option_price2 = lookback(1,2,2,1000)
-    option_price3 = lookback(1.25,2.5,3,1000)
-    option_price4 =  lookback(0.75,1,1.5,1000)
+    option_price1 = lookback(0.5,0.2,1,500)
+    option_price2 = lookback(1,2,2,500)
+    option_price3 = lookback(1.25,2.5,3,500)
+    option_price4 =  lookback(0.75,1,1.5,500)
     option_price_train = np.array(option_price1+option_price2+option_price3)
     option_price_test = np.array(option_price4)
     
-    r_train = np.array(1000*[0.1]+1000*[1]+1000*[1.5])
-    sigma_train= np.array(1000*[0.2]+1000*[2]+1000*[2.5])
-    Time_train = np.array(1000*[1]+1000*[2]+1000*[3])
+    r_train = np.array(500*[0.1]+500*[1]+500*[1.5])
+    sigma_train= np.array(500*[0.2]+500*[2]+500*[2.5])
+    Time_train = np.array(500*[1]+500*[2]+500*[3])
     
-    r_test = np.array(1000*[0.75])
-    sigma_test = np.array(1000*[1])
-    Time_test = np.array(1000*[2])
+    r_test = np.array(500*[0.75])
+    sigma_test = np.array(500*[1])
+    Time_test = np.array(500*[2])
     
     sess = tf.Session()
     x_vals_train = np.array([option_price_train,r_train,sigma_train,Time_train]).T
@@ -101,6 +105,4 @@ def run_main():
     
 if __name__ == '__main__':
     run_main()  
-
-
 
