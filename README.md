@@ -1,2 +1,2 @@
 # Akon_wang
-The programs in master degree
+Programs in the period of postgraduate
