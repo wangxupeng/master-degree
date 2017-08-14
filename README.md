@@ -1,2 +1,2 @@
 # Akon_wang
-something interesting
+The programs in master degree
