@@ -20,7 +20,7 @@ def restore1(sigma, u, v, K):  # 奇异值、左特征向量、右特征向量
     a[a < 0] = 0
     a[a > 255] = 255
     # a = a.clip(0, 255)
-    return np.rint(a).astype('uint8')# numpy.rint(Round elements of the array to the nearest integer.)
+    return np.rint(a).astype('uint8')# numpy.rint(Round elements of the array to the nearest integer.) unit8（无符号的整数，unit8是0～255）
 
 
 def restore2(sigma, u, v, K):  # 奇异值、左特征向量、右特征向量
