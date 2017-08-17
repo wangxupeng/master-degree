@@ -1,4 +1,6 @@
 import numpy as np
+
+
 def explanation():
     a=list(range(15))
     am=np.array(a).reshape(5,3)
