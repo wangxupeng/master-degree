@@ -78,7 +78,7 @@ if __name__ == '__main__':
     patchs = [mpatches.Patch(color='#77E0A0', label='Iris-setosa'),
               mpatches.Patch(color='#FF8080', label='Iris-versicolor'),
               mpatches.Patch(color='#A0A0FF', label='Iris-virginica')]
-    plt.legend(handles=patchs, fancybox=True, framealpha=0.8, loc='lower right')
+    plt.legend(handles=patchs, fancybox=True, framealpha=0.8, loc='lower right')#不同的块不同的颜色对应不同的鸢尾花类型
     plt.title(u'鸢尾花Logistic回归分类效果', fontsize=17)
     # plt.savefig('2.png')
     plt.show()
