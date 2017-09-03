@@ -29,8 +29,7 @@ def main():
     t2 = np.linspace(x2_min, x2_max, 500)
     x1,x2 = np.meshgrid(t1,t2)
     x_show = np.stack((x1.flat,x2.flat),axis=1)
-    # cm_light = mpl.color.ListedColormap(['#A0FFA0', '#FFA0A0', '#A0A0FF'])
-    # cm_dark = mpl.colors.ListedColormap(['g', 'r', 'b'])
+  
 
 
 
