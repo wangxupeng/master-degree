@@ -62,7 +62,7 @@ if __name__ == '__main__':
     plt.legend([b1[0], b2[0]], (u'错误率', u'BIC'))
     plt.title(u'不同方差类型的误差率和BIC', fontsize=18)
 
-    optimal = bic.argmin()
+    optimal = bic.argmin()#Returns the indices of the minimum values along an axis.
     gmm = GaussianMixture(n_components=2,covariance_type= types[optimal], random_state=0)
     gmm.fit(x)
     print("均值:\n", gmm.means_)
