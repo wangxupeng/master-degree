@@ -45,11 +45,7 @@ def run_main():
                           update_every=1, chunksize=100, passes=1)
     print('LDA模型完成,花费时间为{}秒'.format(time.time()- t_start))
 
-    # 所有文档的主题
-    # doc_topic = [a for a in lda[corpus_tfidf]]
-    # for i,topic in enumerate(doc_topic):
-    #     print('第{}篇文档主题:'.format(i+1))
-    #     pprint(topic)
+
 
 
     #主题的词分布
@@ -57,7 +53,7 @@ def run_main():
     print('每个主题的词分布：')
     for topic_id in range(n_topics):
         print('主题#%d：\t' % (topic_id+1))
-        term_distribute_all = lda.get_topic_terms(topicid= topic_id) #terms 不重复的词
+        term_distribute_all = lda.get_topic_terms(topicid= topic_id) #terms 不重复的词,并且词已经按概率从大到小来排列
         term_distribute = term_distribute_all[ : n_words]
         term_distribute = np.array(term_distribute)
         term_id = term_distribute[:, 0].astype(np.int)
@@ -67,6 +63,12 @@ def run_main():
             words.append(dictionary.id2token[t])
         print(words)
 
+    # 所有文档的主题
+    # doc_topic = [a for a in lda[corpus_tfidf]]
+    # for i,topic in enumerate(doc_topic):
+    #     print('第{}篇文档主题:'.format(i+1))
+    #     pprint(topic)
+        
     # 随机打印某10个文档的主题
     num_show_topic = 10 # 每个文档显示前几个主题
     print('随机打印某5个文档的主题:')
