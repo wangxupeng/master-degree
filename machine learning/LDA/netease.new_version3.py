@@ -1,0 +1,133 @@
+# -*- coding:utf-8 -*-
+import numpy as np
+from gensim import corpora, models, similarities
+from pprint import pprint
+import time
+import matplotlib.pyplot as plt
+import pandas as pd
+import matplotlib as mpl
+
+
+def stop_words():
+    with open('stopword.txt', 'r') as f:
+        sw = [line.strip() for line in f]
+    return sw
+
+
+def load_data(filename, sw):
+    with open(filename, 'r', encoding='utf-8') as f:
+        texts = [[word for word in line.strip().lower().split() if word not in sw] for line in f]
+    return texts
+
+
+def run_main():
+    mpl.rcParams['font.sans-serif'] = [u'SimHei']
+    mpl.rcParams['axes.unicode_minus'] = False
+    np.set_printoptions(suppress=True)
+    t_start = time.time()
+    sw = stop_words()
+    texts = load_data('news.dat', sw)
+    print('读入语料数据完成，用时%.3f秒' % (time.time() - t_start))
+    M = len(texts)
+    print('文本数目：%d个' % M)
+
+    print('正在建立词典.')
+    dictionary = corpora.Dictionary(texts)
+    v = len(dictionary)
+    print("词的个数:", v)
+
+    print('正在计算文本向量 --')
+
+    corpus = [dictionary.doc2bow(text) for text in texts]
+
+    print('正在计算文档TF-IDF --')
+    t_start = time.time()
+    corpus_tfidf = models.TfidfModel(corpus)[corpus]
+    print('建立TF-IDF所花费时间{}秒'.format(time.time() - t_start))
+
+    print('LDA模型拟合推断 --')
+    n_topics = 10
+    t_start = time.time()
+    lda = models.LdaModel(corpus=corpus, num_topics=n_topics, id2word=dictionary,
+                          alpha=0.01, eta=0.01, minimum_probability=0.001,
+                          update_every=1, chunksize=100, passes=1)
+    print('LDA模型完成,花费时间为{}秒'.format(time.time() - t_start))
+
+
+
+    # 主题的词分布
+    n_words = 7  # 每个主题显示几个词
+    print('每个主题的词分布：')
+    plt.figure(figsize=(10, 7))
+    title = []
+    for topic_id in range(n_topics):
+        print('主题#%d：\t' % (topic_id + 1))
+        term_distribute_all = lda.get_topic_terms(topicid=topic_id,topn= 300)  # terms 不重复的词,并且词已经按概率从大到小来排列
+        term_distribute_all = np.array(term_distribute_all)
+        td_plot = pd.DataFrame(term_distribute_all)
+        td_plot.columns = ['index', 'number']
+        td_plot.sort_values('index',inplace=True)
+        ax = plt.subplot(5, 2, topic_id + 1)
+        ax.plot(td_plot.values, 'r-')
+        ax.set_xlim(0, 300)
+        ax.set_ylim(0, 0.02)
+        ax.set_ylabel(u"概率")
+        ax.set_title(u"主题 {}".format(topic_id))
+        term_distribute = term_distribute_all[: n_words]
+        term_id = term_distribute[:, 0].astype(np.int)
+        print('词：\t', )
+        words = []
+        for t in term_id:
+            words.append(dictionary.id2token[t])
+        print(words)
+        title.append(words)
+    plt.xlabel(u"词", fontsize=14)
+    plt.tight_layout()
+    plt.suptitle(u'主题的词分布', fontsize=18)
+    plt.subplots_adjust(top=0.9)
+    plt.show()
+
+
+
+    # 所有文档的主题
+    # doc_topic = [a for a in lda[corpus_tfidf]]
+    # for i,topic in enumerate(doc_topic):
+    #     print('第{}篇文档主题:'.format(i+1))
+    #     pprint(topic)
+
+
+
+    # 随机打印某10个文档的主题
+    num_show_topic = 10  # 每个文档显示前几个主题
+    print('随机打印某5个文档的主题:')
+    doc_topics = lda.get_document_topics(corpus_tfidf)  # 所有文档的主题分布
+    idx = np.arange(M)  # M是文档的个数
+    np.random.shuffle(idx)
+    idx = idx[ : 5]
+    plt.figure(figsize=(8, 9))
+    for k,i in enumerate(idx):
+        topic = np.array(doc_topics[i])
+        print("文档{}:\n{}".format(i, topic))
+        topic_distribute = np.array(topic[:, 1])
+        # topic_idx = topic_distribute.argsort()[:-num_show_topic-1:-1]
+        topic_idx = np.argsort(-topic_distribute)  # argsort是从小到大
+        print(('第%d个文档的前%d个主题(按从大到小排列)：' % (i, num_show_topic)), topic_idx)
+        print(topic_distribute[topic_idx])
+        print('第{}个文档属于{}号主题,主题词是:.'.format(i,topic_idx[0]))
+        print(title[topic_idx[0]])
+        ax = plt.subplot(5, 1, k + 1)
+        ax.stem(topic[:,1], linefmt='g-', markerfmt='ro')
+        ax.set_xlim(-1, num_show_topic+1)
+        ax.set_ylim(0, 1)
+        ax.set_ylabel(u"概率")
+        ax.set_title(u"文档 {}".format(k))
+    plt.xlabel(u"主题", fontsize=18)
+    plt.suptitle(u'文档的主题分布', fontsize=18)
+    plt.tight_layout()
+    plt.subplots_adjust(top=0.9)
+    plt.show()
+
+
+
+if __name__ == '__main__':
+    run_main()
