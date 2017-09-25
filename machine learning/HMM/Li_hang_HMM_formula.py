@@ -173,7 +173,6 @@ class HMM(object):
       
     # 计算gamma(计算A所需的分母；详情见李航的统计学习) : 时刻t时马尔可夫链处于状态Si的概率  
     def computeGamma(self, T, alpha, beta, gamma):  
-        ''''''''  
         for t in range(T):  
             for i in range(self.N):  
                 sum = 0.0  
