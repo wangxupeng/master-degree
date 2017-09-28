@@ -25,6 +25,6 @@ def explanation():
         print('----------------------------------')
         print(a)
         np.set_printoptions(suppress=True)
-        
+
 if __name__ == "__main__":
     explanation()
