@@ -24,5 +24,7 @@ def explanation():
         a += sigma_r[k] * np.dot(uk, vk)
         print('----------------------------------')
         print(a)
+        np.set_printoptions(suppress=True)
+        
 if __name__ == "__main__":
     explanation()
