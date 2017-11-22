@@ -21,5 +21,5 @@ if __name__ == '__main__':
         init.run()
         Y0_val, Y1_val = sess.run([Y0, Y1], feed_dict={X0: X0_batch, X1: X1_batch})
 
-    print(Y0_val)
+    print(Y0_val,'\n')
     print(Y1_val)
